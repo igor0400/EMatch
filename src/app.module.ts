@@ -16,6 +16,7 @@ import { PaginationModule } from './libs/pagination/pagination.module';
 import { MailingsModule } from './mailings/mailings.module';
 import { RolesModule } from './roles/roles.module';
 import { BansModule } from './bans/bans.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -46,6 +47,8 @@ import { BansModule } from './bans/bans.module';
 
     // должно быть внизу из за приоритета выполнения
     ListenersLowModule,
+
+    SearchModule,
   ],
 })
 export class AppModule {}

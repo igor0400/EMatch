@@ -22,8 +22,10 @@ export class FinishChainService {
     });
     const { fields, extraData } = chain;
 
-    if (type === 'что-то') {
-      // делать что-то
+    if (type === 'search_course') {
+      const data: any = this.getDataFromChainFields(fields);
+
+      console.log(data);
     }
 
     return finishMessage;

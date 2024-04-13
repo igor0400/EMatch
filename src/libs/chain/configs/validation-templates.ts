@@ -11,8 +11,4 @@ export const validationTemplates = {
     stipulation: +text > value,
     text: `🚫 <b>Число должно быть не больше <code>${value}</code>.</b>`,
   }),
-  uprepetBotToken: (text: string, value: any, isTeamCrearted: boolean) => ({
-    stipulation: isTeamCrearted,
-    text: `🚫 <b>Бот с таким токеном уже существует.</b>`,
-  }),
 };
