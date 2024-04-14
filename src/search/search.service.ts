@@ -99,37 +99,35 @@ export class SearchService {
       requestData.maxPrice = +price.replaceAll(/!\w/gi, '') ?? false;
     }
 
-    let courses;
-
     try {
       const response = await axios.post(
         `${process.env.BACKEND_URL}/search`,
         requestData,
       );
 
-      courses = response.data;
-    } catch (e) {}
+      await loading.stopAndDelete();
 
-    await loading.stopAndDelete();
+      const courses = response.data;
 
-    if (courses) {
       await this.coursesService.sendCourses(userTgId, courses);
 
       await this.feedbackService.sendFeedbackMessage(userTgId);
-    } else {
+    } catch (e) {
+      await loading.stopAndDelete();
+
       await sendMessage('<b>Ничего не найдено</b> 🤷‍♂️', {
         bot: this.bot,
         chatId: userTgId,
         type: 'send',
         isBanner: false,
       });
+    } finally {
+      await sendMessage(menuMessage(), {
+        bot: this.bot,
+        chatId: userTgId,
+        reply_markup: menuMarkup,
+        type: 'send',
+      });
     }
-
-    await sendMessage(menuMessage(), {
-      bot: this.bot,
-      chatId: userTgId,
-      reply_markup: menuMarkup,
-      type: 'send',
-    });
   }
 }
