@@ -8,7 +8,12 @@ export const validationSchema = Joi.object({
   MYSQL_PASSWORD: Joi.string().required(),
 
   PORT: Joi.number().required(),
-  BOT_TOKEN: Joi.string().required(),
   ADMIN_USERNAME: Joi.string().required(),
+  ADMIN_TG_ID: Joi.string().required(),
+
+  BOT_TOKEN: Joi.string().required(),
   BANNER_URL: Joi.string().optional(),
+
+  CHANNEL_ID: Joi.string().required(),
+  BACKEND_URL: Joi.string().optional(),
 });

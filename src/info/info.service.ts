@@ -8,7 +8,7 @@ export class InfoService {
   async changeToInfo(ctx: Context) {
     await sendMessage(infoMessage(), {
       ctx,
-      reply_markup: infoMarkup,
+      reply_markup: infoMarkup(),
     });
   }
 }

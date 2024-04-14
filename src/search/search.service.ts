@@ -11,6 +11,37 @@ import { sendMessage } from 'src/general';
 import { getCtxData, timeout } from 'src/libs/common';
 import { GeneralPresets } from 'src/general/general.presets';
 import { InjectBot } from 'nestjs-telegraf';
+import axios from 'axios';
+import { FeedbackService } from 'src/feedback/feedback.service';
+import { CoursesService } from 'src/courses/courses.service';
+import { menuMarkup, menuMessage } from 'src/menu/responses';
+
+const testResponse = [
+  {
+    course_url: 'https://stepik.org/course/125756/promo?search=3800666703',
+    cover:
+      'https://cdn.stepik.net/media/cache/images/courses/125756/cover_y5VlHKD/a04e8cd839f39ace3e389b8d3e8a34ce.png',
+    summary: '',
+    tags: [],
+    title: 'Практический мини-курс по JavaScript и Bootstrap 5',
+  },
+  {
+    course_url: 'https://stepik.org/course/125756/promo?search=3800666703',
+    cover:
+      'https://cdn.stepik.net/media/cache/images/courses/125756/cover_y5VlHKD/a04e8cd839f39ace3e389b8d3e8a34ce.png',
+    summary: '',
+    tags: [],
+    title: 'Практический мини-курс по JavaScript и Bootstrap 5',
+  },
+  {
+    course_url: 'https://stepik.org/course/125756/promo?search=3800666703',
+    cover:
+      'https://cdn.stepik.net/media/cache/images/courses/125756/cover_y5VlHKD/a04e8cd839f39ace3e389b8d3e8a34ce.png',
+    summary: '',
+    tags: [],
+    title: 'Практический мини-курс по JavaScript и Bootstrap 5',
+  },
+];
 
 @Injectable()
 export class SearchService {
@@ -18,6 +49,8 @@ export class SearchService {
     @Inject(forwardRef(() => ChainService))
     private readonly chainService: ChainService,
     private readonly generalPresets: GeneralPresets,
+    private readonly feedbackService: FeedbackService,
+    private readonly coursesService: CoursesService,
     @InjectBot() private readonly bot: Telegraf<Context>,
   ) {}
 
@@ -73,7 +106,7 @@ export class SearchService {
     );
 
     const requestData: any = {
-      title,
+      userRequest: title,
       language,
       minPrice: false,
       maxPrice: false,
@@ -93,18 +126,37 @@ export class SearchService {
       requestData.maxPrice = +price.replaceAll(/!\w/gi, '') ?? false;
     }
 
-    // post request with requestData
-    await timeout(3000);
+    let courses;
+
+    try {
+      const response = await axios.post(
+        'http://localhost:10000/search',
+        requestData,
+      );
+
+      courses = response.data;
+    } catch (e) {}
 
     await loading.stopAndDelete();
 
-    await sendMessage(`вот ваш курс!!!, ${JSON.stringify(requestData)}`, {
+    if (courses) {
+      await this.coursesService.sendCourses(userTgId, testResponse);
+
+      await this.feedbackService.sendFeedbackMessage(userTgId);
+    } else {
+      await sendMessage('<b>Ничего не найдено</b> 🤷‍♂️', {
+        bot: this.bot,
+        chatId: userTgId,
+        type: 'send',
+        isBanner: false,
+      });
+    }
+
+    await sendMessage(menuMessage(), {
       bot: this.bot,
       chatId: userTgId,
-      isBanner: false,
+      reply_markup: menuMarkup,
       type: 'send',
     });
-
-    console.log(requestData);
   }
 }

@@ -17,6 +17,8 @@ import { MailingsModule } from './mailings/mailings.module';
 import { RolesModule } from './roles/roles.module';
 import { BansModule } from './bans/bans.module';
 import { SearchModule } from './search/search.module';
+import { FeedbackModule } from './feedback/feedback.module';
+import { CoursesModule } from './courses/courses.module';
 
 @Module({
   imports: [
@@ -44,11 +46,12 @@ import { SearchModule } from './search/search.module';
     MailingsModule,
     RolesModule,
     BansModule,
+    SearchModule,
+    FeedbackModule,
+    CoursesModule,
 
     // должно быть внизу из за приоритета выполнения
     ListenersLowModule,
-
-    SearchModule,
   ],
 })
 export class AppModule {}

@@ -25,3 +25,7 @@ module.exports = {
     return queryInterface.dropTable('UserRoles');
   },
 };
+
+for (let i in ['some', 'test']) {
+  console.log(i, typeof i);
+}

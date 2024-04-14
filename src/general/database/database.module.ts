@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { BanUser } from 'src/bans/models/ban-user.model';
+import { SearchCoursesFeedback } from 'src/feedback/models/search-courses-feedback.model';
 import { ChainField } from 'src/libs/chain/models/chain-field.model';
 import { Chain } from 'src/libs/chain/models/chain.model';
 import { DatabaseModule as AppDatabaseModule } from 'src/libs/common';
@@ -24,6 +25,7 @@ import { User } from 'src/users/models/user.model';
       Mailing,
       MailingTemplate,
       MailingQueueItem,
+      SearchCoursesFeedback,
     ]),
   ],
 })
