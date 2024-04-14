@@ -16,33 +16,6 @@ import { FeedbackService } from 'src/feedback/feedback.service';
 import { CoursesService } from 'src/courses/courses.service';
 import { menuMarkup, menuMessage } from 'src/menu/responses';
 
-const testResponse = [
-  {
-    course_url: 'https://stepik.org/course/125756/promo?search=3800666703',
-    cover:
-      'https://cdn.stepik.net/media/cache/images/courses/125756/cover_y5VlHKD/a04e8cd839f39ace3e389b8d3e8a34ce.png',
-    summary: '',
-    tags: [],
-    title: 'Практический мини-курс по JavaScript и Bootstrap 5',
-  },
-  {
-    course_url: 'https://stepik.org/course/125756/promo?search=3800666703',
-    cover:
-      'https://cdn.stepik.net/media/cache/images/courses/125756/cover_y5VlHKD/a04e8cd839f39ace3e389b8d3e8a34ce.png',
-    summary: '',
-    tags: [],
-    title: 'Практический мини-курс по JavaScript и Bootstrap 5',
-  },
-  {
-    course_url: 'https://stepik.org/course/125756/promo?search=3800666703',
-    cover:
-      'https://cdn.stepik.net/media/cache/images/courses/125756/cover_y5VlHKD/a04e8cd839f39ace3e389b8d3e8a34ce.png',
-    summary: '',
-    tags: [],
-    title: 'Практический мини-курс по JavaScript и Bootstrap 5',
-  },
-];
-
 @Injectable()
 export class SearchService {
   constructor(
@@ -130,7 +103,7 @@ export class SearchService {
 
     try {
       const response = await axios.post(
-        'http://localhost:10000/search',
+        `${process.env.BACKEND_URL}/search`,
         requestData,
       );
 
@@ -140,7 +113,7 @@ export class SearchService {
     await loading.stopAndDelete();
 
     if (courses) {
-      await this.coursesService.sendCourses(userTgId, testResponse);
+      await this.coursesService.sendCourses(userTgId, courses);
 
       await this.feedbackService.sendFeedbackMessage(userTgId);
     } else {
