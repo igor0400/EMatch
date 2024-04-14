@@ -101,7 +101,7 @@ export class SearchService {
 
     try {
       const response = await axios.post(
-        `${process.env.BACKEND_URL}/search`,
+        `http://127.0.0.1:10000/search`,
         requestData,
       );
 
@@ -113,6 +113,8 @@ export class SearchService {
 
       await this.feedbackService.sendFeedbackMessage(userTgId);
     } catch (e) {
+      console.log(e);
+
       await loading.stopAndDelete();
 
       await sendMessage('<b>Ничего не найдено</b> 🤷‍♂️', {
