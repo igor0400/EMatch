@@ -7,15 +7,30 @@ import { sendMessage } from './assets';
 export class GeneralPresets {
   constructor(@InjectBot() private readonly bot: Telegraf<Context>) {}
 
-  async sendLoading(ctx: Context, initText = '♻️ Загрузка') {
+  async sendLoading(
+    ctx: Context | undefined,
+    initText = '♻️ Загрузка',
+    initChatId?: string,
+  ) {
     let isWork = true;
     let count = 2;
     let type = 'dec';
+    let message;
 
-    const message = await ctx.sendMessage(this.textWrapper(`${initText}...`), {
-      parse_mode: 'HTML',
-      disable_notification: true,
-    });
+    const loadingText = this.textWrapper(`${initText}...`);
+    if (ctx) {
+      message = await ctx.sendMessage(loadingText, {
+        parse_mode: 'HTML',
+        disable_notification: true,
+      });
+    } else {
+      message = await sendMessage(loadingText, {
+        bot: this.bot,
+        chatId: initChatId,
+        isBanner: false,
+        type: 'send',
+      });
+    }
 
     const internalId = setInterval(async () => {
       let text = initText;

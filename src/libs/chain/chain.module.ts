@@ -10,6 +10,7 @@ import { GeneralModule } from 'src/general/general.module';
 import { MenuModule } from 'src/menu/menu.module';
 import { ChainUpdate } from './chain.update';
 import { FinishChainService } from './finish-chain.service';
+import { SearchModule } from 'src/search/search.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { FinishChainService } from './finish-chain.service';
     UsersModule,
     forwardRef(() => GeneralModule),
     forwardRef(() => MenuModule),
+    forwardRef(() => SearchModule),
   ],
   providers: [
     ChainService,

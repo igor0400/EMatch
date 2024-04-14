@@ -13,6 +13,13 @@ export class SearchUpdate {
   @Action('search_course')
   async searchCourseBtn(@Ctx() ctx: Context) {
     await this.middlewares.btnMiddleware(ctx, (ctx: Context) =>
+      this.searchService.changeToSelectLanguage(ctx),
+    );
+  }
+
+  @Action(/.*::select_search_lang/)
+  async selectSearchLangBtn(@Ctx() ctx: Context) {
+    await this.middlewares.btnMiddleware(ctx, (ctx: Context) =>
       this.searchService.changeToCollectSearchData(ctx),
     );
   }

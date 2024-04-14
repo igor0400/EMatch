@@ -16,6 +16,7 @@ interface MessageSettings {
   messageId?: number;
   inlineMessageId?: string;
   reply_to_message_id?: number;
+  banner_url?: string;
 }
 
 export const sendMessage = async (
@@ -30,6 +31,8 @@ export const sendMessage = async (
     chatId,
     messageId,
     inlineMessageId,
+    reply_to_message_id,
+    banner_url,
     ...extra
   }: MessageSettings,
 ) => {
@@ -44,7 +47,7 @@ export const sendMessage = async (
 
     let isHaveBanner = isBanner ?? Boolean(process.env.BANNER_URL);
 
-    const photoData = replyPhoto();
+    const photoData = banner_url ? { url: banner_url } : replyPhoto();
 
     if (ctx) {
       if (type === 'edit') {
